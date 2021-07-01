@@ -26,9 +26,32 @@ class Router
         $method = $this->request->getMethod();
         $callback = $this->routes[$method][$path] ?? false;
         if($callback == false){
-            echo 'not found';
-            exit();
+            return 'not found';
+        }
+        if(is_string($callback)){
+            return $this->renderView($callback);
         }
         echo call_user_func($callback);
+    }
+
+    private function renderView(string $view)
+    {
+        //replace the layoutContent method
+        $layout = $this->getLayout();
+        $viewContent = $this->renderOnlyView($view);
+        return str_replace('{{content}}',$viewContent,$layout);
+    }
+
+    protected function getLayout()
+    {
+        ob_start();
+        require_once Application::$ROOT_DIR."/Views/layouts/main.php";
+        return ob_get_clean();
+    }
+    protected function renderOnlyView($view)
+    {
+        ob_start();
+        require_once Application::$ROOT_DIR."/Views/$view.php";
+        return ob_get_clean();
     }
 }
