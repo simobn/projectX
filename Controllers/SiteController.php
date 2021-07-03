@@ -16,6 +16,9 @@ class SiteController extends Controller
         ];
         return $this->render('home' ,$param);
     }
+    public function contact(){
+        return $this->render('contact');
+    }
     public function handleContact(Request $request){
         $body = $request->getBoy();
         var_dump($body);
