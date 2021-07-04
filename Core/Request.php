@@ -37,7 +37,7 @@ class Request
     {
         return $this->method() === 'post';
     }
-    public function getBoy()
+    public function getBody()
     {
         $body = [];
         if($this->method() === 'get'){
@@ -51,5 +51,10 @@ class Request
             }
         }
         return $body;
+    }
+
+    public function input(string $input)
+    {
+        return $this->getBody()[$input]?? null;
     }
 }

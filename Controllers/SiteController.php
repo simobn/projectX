@@ -19,8 +19,9 @@ class SiteController extends Controller
     public function contact(){
         return $this->render('contact');
     }
+
     public function handleContact(Request $request){
-        $body = $request->getBoy();
+        $body = $request->getBody();
         var_dump($body);
 //        return 'handle contact';
     }

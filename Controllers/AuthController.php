@@ -9,6 +9,7 @@
 namespace app\Controllers;
 use app\core\Controller;
 use app\core\Request;
+use app\Models\RegisterModel;
 
 class AuthController extends Controller
 {
@@ -20,17 +21,29 @@ class AuthController extends Controller
 
     public function handleLogin(Request $request)
     {
-        var_dump($request->getBoy());
+        var_dump($request->getBody());
     }
 
     public function register()
     {
+        $registerModel = new RegisterModel();
         $this->setLayout('auth');
-        return $this->render('register');
+        return $this->render('register',[
+            'model' => $registerModel
+        ]);
     }
 
     public function handleRegister(Request $request)
     {
-        var_dump($request->getBoy());
+        $registerModel = new RegisterModel();
+        $registerModel->loadData($request->getBody());
+
+        if($registerModel->validate() && $registerModel->register()){
+            return 'success';
+        }
+        var_dump($registerModel->errors);
+        return $this->render('register',[
+            'model' => $registerModel
+        ]);
     }
 }
