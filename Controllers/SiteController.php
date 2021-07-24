@@ -19,6 +19,14 @@ class SiteController extends Controller
     public function contact(){
         return $this->render('contact');
     }
+    public function about(){
+        $test = [];
+        array_push($test , 'anasss');
+        $message = $test[0];
+        return $this->render('abouus',[
+            'name'  =>  $name
+        ]);
+    }
 
     public function handleContact(Request $request){
         $body = $request->getBody();

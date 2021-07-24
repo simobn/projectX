@@ -38,6 +38,7 @@ class AuthController extends Controller
             $response->redirect('/');
             return;
         }
+        $this->setLayout('auth');
         return $this->render('login',[
             'model' => $loginForm
         ]);
