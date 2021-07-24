@@ -5,10 +5,11 @@
  */
 
 namespace app\Models;
-use app\Core\DbModel;
-use app\Core\Model;
+//use app\Core\DbModel;
+//use app\Core\Model;
+use app\Core\UserModel;
 
-class User extends DbModel
+class User extends UserModel
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
@@ -26,6 +27,19 @@ class User extends DbModel
     {
         return 'users';
     }
+
+    public function primaryKey(): string
+    {
+        // TODO: Implement primaryKey() method.
+        return 'id';
+    }
+
+    public function getDisplayName(): string
+    {
+        // TODO: Implement getDisplayName() method.
+        return "$this->firstname $this->lastname";
+    }
+
     public function attributes(): array
     {
         return ['firstname','lastname','email','password','status'];

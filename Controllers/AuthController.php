@@ -10,19 +10,37 @@ namespace app\Controllers;
 use app\Core\Application;
 use app\core\Controller;
 use app\core\Request;
+use app\core\Response;
+use app\Models\loginForm;
 use app\Models\User;
 
 class AuthController extends Controller
 {
 
     public function login(){
+        $loginForm = new loginForm();
         $this->setLayout('auth');
-        return $this->render('login');
+        return $this->render('login',[
+            'model' => $loginForm
+        ]);
     }
 
-    public function handleLogin(Request $request)
+    public function logout(Request $request , Response $response){
+        Application::$app->logout();
+        $response->redirect('/');
+    }
+
+    public function handleLogin(Request $request , Response $response)
     {
-        var_dump($request->getBody());
+        $loginForm = new loginForm();
+        $loginForm->loadData($request->getBody());
+        if($loginForm->validate() && $loginForm->login()){
+            $response->redirect('/');
+            return;
+        }
+        return $this->render('login',[
+            'model' => $loginForm
+        ]);
     }
 
     public function register()

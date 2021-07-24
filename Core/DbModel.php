@@ -12,6 +12,8 @@ abstract class DbModel extends Model
 
     abstract public function attributes(): array;
 
+    abstract public function primaryKey(): string;
+
     public function save(){
         $tableName = $this->tableName();
         $attributes = $this->attributes();
@@ -27,6 +29,21 @@ abstract class DbModel extends Model
 
         $statement->execute();
         return true;
+    }
+
+    public function findOne($where)
+    {
+        $tableName = static::tableName();
+        $attributes = array_keys($where);
+        $wheres = implode('AND',array_map(fn($attr) => "$attr = :$attr",$attributes));
+
+        $statement = self::prepare("SELECT * FROM $tableName WHERE $wheres");
+        foreach ($where as $key => $item){
+            $statement->bindValue(":$key",$item);
+        }
+        $statement->execute();
+
+        return $statement->fetchObject(static::class);
     }
 
     public static function prepare($sql){
