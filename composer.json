@@ -1,5 +1,5 @@
 {
-    "name": "administrator/pfe",
+    "name": "medben/laralus",
     "type": "project",
     "autoload": {
         "psr-4": {
