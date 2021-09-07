@@ -4,7 +4,10 @@
  * @package app\Core
  * @author mohammedd benouijem <mbenouijem@gmail.com>
  */
-namespace app\Core;
+namespace app\Core\Db;
+
+use app\Core\Application;
+use app\Core\Model;
 
 abstract class DbModel extends Model
 {

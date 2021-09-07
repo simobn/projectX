@@ -5,7 +5,9 @@
  * @author mohammedd benouijem <mbenouijem@gmail.com>
  */
 
-namespace app\Core;
+namespace app\Core\Db;
+use app\Core\Application;
+
 class Database
 {
     public \PDO $pdo;

@@ -1,12 +1,10 @@
 <?php
-/**
- * Class Application
- * @author mohammedd benouijem <mbenouijem@gmail.com>
- */
 namespace app\Core;
+use app\Core\Db\Database;
 
 class Application
 {
+    public string $layout = 'main';
     public string $userClass;
     public static string $ROOT_DIR;
     public Router $router;
@@ -16,7 +14,8 @@ class Application
     public Database $db;
     public Controller $controller;
     public static Application $app;
-    public ?DbModel $user;
+    public ?UserModel $user;
+    public View $view;
     /**
      * Application constructor.
      */
@@ -30,6 +29,7 @@ class Application
         $this->request = new Request();
         $this->response = new Response();
         $this->session = new Session();
+        $this->view = new View();
         $this->db = new Database($config['db']);
         $this->router = new Router($this->request,$this->response);
 
@@ -50,7 +50,14 @@ class Application
 
     public function run()
     {
-        echo $this->router->resolve();
+        try {
+            echo $this->router->resolve();
+        }catch (\Exception $exception){
+            $this->response->setStatusCode($exception->getCode());
+            echo $this->view->renderView('_error',[
+                'exception'     =>  $exception
+            ]);
+        }
     }
 
     /**
@@ -69,12 +76,13 @@ class Application
         $this->controller = $controller;
     }
 
-    public function login(DbModel $user)
+    public function login(UserModel $user)
     {
         $this->user = $user;
         $primaryKey = $user->primaryKey();
         $primaryKeyValue = $user->{$primaryKey};
         $this->session->set('user', $primaryKeyValue);
+        return true;
     }
 
     public function logout()

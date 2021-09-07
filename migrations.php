@@ -11,6 +11,7 @@ $dotenv->load();
 
 //loading config from env
 $config = [
+    'userClass' => \app\Core\UserModel::class,
     'db' => [
         'host'        => $_ENV['DB_HOST'],
         'port'        => $_ENV['DB_PORT'],
